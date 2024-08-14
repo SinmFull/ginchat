@@ -29,7 +29,7 @@ func Resp(w http.ResponseWriter, code int, data interface{}, msg string) {
 	w.Write(ret)
 }
 
-func RespList(w http.ResponseWriter, code int, data interface{}, total int) {
+func RespList(w http.ResponseWriter, code int, data interface{}, total interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	h := H{

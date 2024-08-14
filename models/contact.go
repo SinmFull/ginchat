@@ -34,18 +34,17 @@ func SearchFriend(userId uint) []UserBasic {
 	return users
 }
 
-func AddFriend(userId uint, targetId uint) (int, string) {
+func AddFriend(userId uint, targetName string) (int, string) {
 	//fmt.Println("user>>", userId, "   tarID>>>>>", targetId)
-	user := UserBasic{}
-	if targetId != 0 {
-		user = FindUserByID(targetId)
-		if user.Salt != "" {
+	if targetName != "" {
+		targetUser := FindUserByName(targetName)
+		if targetUser.Salt != "" {
 
-			if userId == user.ID {
+			if userId == targetUser.ID {
 				return -1, "不能添加自己为好友"
 			}
 			contact0 := Contact{}
-			utils.DB.Where("owner_id = ? and target_id = ? and type = 1", userId, targetId).Find(&contact0)
+			utils.DB.Where("owner_id = ? and target_id = ? and type = 1", userId, targetUser.ID).Find(&contact0)
 			if contact0.ID != 0 {
 				return -1, "该用户已经是您的好友"
 			}
@@ -59,14 +58,14 @@ func AddFriend(userId uint, targetId uint) (int, string) {
 			}()
 			contact := Contact{}
 			contact.OwnerId = userId
-			contact.TargetId = targetId
+			contact.TargetId = targetUser.ID
 			contact.Type = 1
 			if err := utils.DB.Create(&contact).Error; err != nil {
 				tx.Rollback()
 				return -1, "添加好友失败"
 			}
 			contact1 := Contact{}
-			contact1.OwnerId = targetId
+			contact1.OwnerId = targetUser.ID
 			contact1.TargetId = userId
 			contact1.Type = 1
 			if err := utils.DB.Create(&contact1).Error; err != nil {

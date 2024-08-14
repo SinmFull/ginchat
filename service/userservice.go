@@ -245,9 +245,10 @@ func SearchFriends(c *gin.Context) {
 
 func AddFriend(c *gin.Context) {
 	uid, _ := strconv.Atoi(c.Request.FormValue("userId"))
-	tid, _ := strconv.Atoi(c.Request.FormValue("targetId"))
-	fmt.Println("tarId>>>>>>>>>", tid)
-	code, msg := models.AddFriend(uint(uid), uint(tid))
+	tname := c.Request.FormValue("targetName")
+
+	fmt.Println(tname)
+	code, msg := models.AddFriend(uint(uid), tname)
 	// c.JSON(200, gin.H{
 	// 	"code":    0, //0正确 -1 错误
 	// 	"message": "查询好友列表成功",
@@ -269,13 +270,19 @@ func CreateCommunity(c *gin.Context) {
 	community.Name = name
 
 	code, msg := models.CreateCommunity(community)
-	// c.JSON(200, gin.H{
-	// 	"code":    0, //0正确 -1 错误
-	// 	"message": "查询好友列表成功",
-	// 	"data":    users,
-	// })
 	if code == 0 {
 		utils.RespOK(c.Writer, code, msg)
+	} else {
+		utils.RespFail(c.Writer, msg)
+	}
+}
+
+func LoadCommunity(c *gin.Context) {
+	oid, _ := strconv.Atoi(c.Request.FormValue("ownerId"))
+
+	data, msg := models.LoadCommunity(uint(oid))
+	if len(data) != 0 {
+		utils.RespList(c.Writer, 0, data, msg)
 	} else {
 		utils.RespFail(c.Writer, msg)
 	}
