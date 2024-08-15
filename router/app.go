@@ -48,5 +48,8 @@ func Router() *gin.Engine {
 
 	//群列表
 	r.POST("/contact/loadcommunity", service.LoadCommunity)
+
+	//加群
+	r.POST("/contact/joinGroup", service.JoinGroup)
 	return r
 }
