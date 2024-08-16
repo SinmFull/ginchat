@@ -151,6 +151,14 @@ func DeleteUser(c *gin.Context) {
 	})
 }
 
+func FindByID(c *gin.Context) {
+	userId, _ := strconv.Atoi(c.Request.FormValue("userId"))
+
+	//	name := c.Request.FormValue("name")
+	data := models.FindByID(uint(userId))
+	utils.RespOK(c.Writer, data, "ok")
+}
+
 // DeleteUser
 // Summary 更新用户
 // @Tags 用户模块

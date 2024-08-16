@@ -79,11 +79,6 @@ func Chat(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// 2. 获取连接
-	// node := &Node{
-	// 	Conn:      conn,
-	// 	DataQueue: make(chan []byte, 50),
-	// 	GroupSets: set.New(set.ThreadSafe),
-	// }
 	currentTime := uint64(time.Now().Unix())
 	node := &Node{
 		Conn:          conn,
@@ -158,7 +153,7 @@ func broadMsg(data []byte) {
 func init() {
 	go udpSendProc()
 	go udpRecvProc()
-	fmt.Println("init goroutine: ")
+	//fmt.Println("init goroutine: ")
 }
 
 // 完成udp数据发送协程
