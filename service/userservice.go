@@ -159,6 +159,14 @@ func FindByID(c *gin.Context) {
 	utils.RespOK(c.Writer, data, "ok")
 }
 
+func FindByName(c *gin.Context) {
+	userName := c.Request.FormValue("userName")
+
+	//	name := c.Request.FormValue("name")
+	data := models.FindUserByName(userName)
+	utils.RespOK(c.Writer, data, "ok")
+}
+
 // DeleteUser
 // Summary 更新用户
 // @Tags 用户模块
